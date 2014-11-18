@@ -23,6 +23,7 @@ The rules of Set are summarized by: If you can sort a group of three cards into 
 '''
 
 import random
+import os
 
 
 class Card(object):
@@ -40,10 +41,10 @@ class Card(object):
 def create_deck():
     new_deck = []
     card_number = 0
-    for number in ['one', 'two', 'three']:
-        for symbol in ['diamond', 'squiggle', 'oval']:
-            for shading in ['solid', 'striped', 'open']:
-                for color in ['red', 'green', 'purple']:
+    for number in ['one  ', 'two  ', 'three']:
+        for symbol in ['diamond ', 'squiggle', 'oval    ']:
+            for shading in ['solid  ', 'striped', 'open   ']:
+                for color in ['red   ', 'green ', 'purple']:
                     card_number += 1
                     new_deck.append(Card(number, symbol, shading, color))
     return new_deck
@@ -72,6 +73,7 @@ def number_test(card1, card2, card3):
         and card3.number != card1.number:
         return True
     else:
+        print "The numbers don't make a set."
         return False
 
 
@@ -82,6 +84,7 @@ def symbol_test(card1, card2, card3):
         and card3.symbol != card1.symbol:
         return True
     else:
+        print "The symbols don't make a set."
         return False
 
 
@@ -92,6 +95,7 @@ def shading_test(card1, card2, card3):
         and card3.shading != card1.shading:
         return True
     else:
+        print "The shadings don't make a set."
         return False
 
 
@@ -102,20 +106,17 @@ def color_test(card1, card2, card3):
         and card3.color != card1.color:
         return True
     else:
+        print "The colors don't make a set."
         return False
 
 
 def test_for_set(card1, card2, card3):
-    if not number_test(card1, card2, card3):
-        print "The numbers don't make a set."
-    elif not symbol_test(card1, card2, card3):
-        print "The symbols don't make a set."
-    elif not shading_test(card1, card2, card3):
-        print "The shadings don't make a set."
-    elif not color_test(card1, card2, card3):
-        print "The colors don't make a set."
-    else:
+    if number_test(card1, card2, card3) and symbol_test(card1, card2, \
+        card3) and shading_test(card1, card2, card3) and color_test( \
+        card1, card2, card3):
         return True
+    else:
+        return False
 
 
 def play_set():
@@ -124,8 +125,52 @@ def play_set():
     deck = create_deck()
     field = []
 
-    
+    os.system('clear')
 
+    print "!!!!!!!!!!"
+    print "NOTE WELL:"
+    print "!!!!!!!!!!"
+    print "This version of the game is bare-bones functional only!"
+    print "Now is not the time to try and break things. I know a bunch"
+    print "of things that need fixing still. For now, just play by the"
+    print "rules, and don't try to stick any strange inputs where they"
+    print "don't belong. Thanks! -TL"
 
+    for i in range(0, 12):
+        deal_to_field(deck, field)
+
+    while len(field) > 0:
+        show_field(field)
+        
+        mode_select = raw_input("Would you like to declare a set or " + \
+            "deal three more cards? (set/deal) ")
+
+        if mode_select == "deal":
+            for i in range(0, 3):
+                deal_to_field(deck, field)
+            show_field(field)
+
+        print "You will be prompted to make three selections."
+        print "Use the index numbers on the left for your choices.", "\n"
+
+        choice1 = int(raw_input(" First Choice: "))
+        choice2 = int(raw_input("Second Choice: "))
+        choice3 = int(raw_input(" Third Choice: "))
+
+        print ""
+
+        holding = []
+        if test_for_set(field[choice1], field[choice2], field[choice3]):
+            print "\n--- You made a set! ---\n"
+            for i in range(len(field)):
+                if i not in [choice1, choice2, choice3]:
+                    holding.append(field[i])
+            field = holding
+            if len(field) < 10 and len(deck) > 0:
+                for i in range(0, 3):
+                    deal_to_field(deck, field)
+
+        if len(field) < 1 and len(deck) < 1:
+            print "Congratulations! Game over!"
 
 
