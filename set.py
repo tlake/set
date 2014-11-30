@@ -16,7 +16,7 @@ A set consists of three cards which satisfy all of these conditions:
 They all have the same number, or they have three different numbers.
 They all have the same symbol, or they have three different symbols.
 They all have the same background, or they have three different backgrounds.
-They all have the same foregrounds, or they have three different foregrounds.
+They all have the same foreground, or they have three different foregrounds.
 
 The rules of Set are summarized by: If you can sort a group of three cards into "Two of ____ and one of _____," then it is not a set.
 
@@ -141,10 +141,10 @@ def play_set():
         show_field(field)
         
         mode_select = raw_input("Would you like to declare a set, " + \
-            "deal three more cards, or check on the status of the " \
-            "deck? (set/deal/check) ")
+            "deal three more cards, check on the status of the " \
+            "deck, or read the rules? (set/deal/check/rules) ")
 
-        if mode_select not in ['set', 'deal', 'check']:
+        if mode_select not in ['set', 'deal', 'check', 'rules']:
             print '\n', 'Invalid action.'
 
         elif mode_select == 'deal':
@@ -155,6 +155,23 @@ def play_set():
             print '\n', 'There are ' + str(len(deck)) + ' cards left ' \
                 + 'in the deck, and ' + str(len(field)) + ' cards on ' \
                 + 'the field.'
+
+        elif mode_select == 'rules':
+            print '\n' + "A set consists of three cards which satisfy " \
+                "all of these conditions:" + '\n\n' + \
+                "1. They all have the same number," + '\n' + \
+                "\tor they have three different numbers." + '\n\n' + \
+                "2. They all have the same symbol," + '\n' + \
+                "\tor they have three different symbols." + '\n\n' + \
+                "3. They all have the same background," + '\n' + \
+                "\tor they have three different backgrounds." + '\n\n' + \
+                "4. They all have the same foreground," + '\n' + \
+                "\tor they have three different foregrounds." + '\n\n' + \
+                'The rules of Set are summarized by:' + '\n\t' + \
+                'If you can sort a group of three cards into' + '\n' + \
+                '\t"Two of ____ and one of _____," then it is not a set.' \
+                + '\n'
+
         else:
 
             print "You will be prompted to make three selections."
