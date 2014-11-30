@@ -22,8 +22,12 @@ The rules of Set are summarized by: If you can sort a group of three cards into 
 
 '''
 
+import colorama
 import random
 import os
+
+# Initialize colorama's coloring functionalities
+colorama.init(autoreset = True)
 
 
 class Card(object):
@@ -76,17 +80,15 @@ def number_test(card1, card2, card3):
         print "The numbers don't make a set."
         return False
 
-
-def symbol_test(card1, card2, card3):
-    if card1.symbol == card2.symbol and card2.symbol == card3.symbol:
-        return True
+def symbol_test(card1, card2, card3): 
+    if card1.symbol == card2.symbol and card2.symbol == card3.symbol: 
+        return True 
     elif card1.symbol != card2.symbol and card2.symbol != card3.symbol \
         and card3.symbol != card1.symbol:
         return True
     else:
         print "The symbols don't make a set."
         return False
-
 
 def shading_test(card1, card2, card3):
     if card1.shading == card2.shading and card2.shading == card3.shading:
@@ -98,7 +100,6 @@ def shading_test(card1, card2, card3):
         print "The shadings don't make a set."
         return False
 
-
 def color_test(card1, card2, card3):
     if card1.color == card2.color and card2.color == card3.color:
         return True
@@ -106,9 +107,8 @@ def color_test(card1, card2, card3):
         and card3.color != card1.color:
         return True
     else:
-        print "The colors don't make a set."
-        return False
-
+        print "The colors don't make a set." 
+        return False 
 
 def test_for_set(card1, card2, card3):
     if number_test(card1, card2, card3) and symbol_test(card1, card2, \
