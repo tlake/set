@@ -1,6 +1,6 @@
 ============
 
-An ASCII recreation of the card game SET.
+A Python recreation of the card game SET.
 
 ============
 
