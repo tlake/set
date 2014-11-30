@@ -168,16 +168,15 @@ def play_set():
             choice3 = raw_input(" Third Choice: ")
 
             # error handling to catch nonvalid card selections
-            if ( \
-                choice1 not in range(len(field)) or \
-                choice2 not in range(len(field)) or \
-                choice3 not in range(len(field)) \
-                ) \
-                or ( \
+            field_indices = []
+            for i in range(len(field)):
+                field_indices.append(str(i))
+            if choice1 not in field_indices or \
+                choice2 not in field_indices or \
+                choice3 not in field_indices or \
                 choice1 == choice2 or \
                 choice2 == choice3 or \
-                choice3 == choice1 \
-                ):
+                choice3 == choice1:
 
                 print '\n', 'Please enter three different, valid ' \
                     + 'card indices.'
