@@ -22,20 +22,18 @@ The rules of Set are summarized by: If you can sort a group of three cards into 
 
 '''
 
-import colorama
 import random
 import os
 
-# Initialize colorama's coloring functionalities
-colorama.init(autoreset = True)
 
-# Define color definitions
+# Assign color definitions
 bg_blue = '\033[44m'
 bg_black = '\033[40m'
 bg_magenta = '\033[45m'
-fg_yellow = '\033[33m'
-fg_cyan = '\033[36m'
-fg_white = '\033[37m'
+fg_yellow = '\033[1;33m'
+fg_cyan = '\033[1;36m'
+fg_white = '\033[1;37m'
+font_reset = '\033[0m'
 
 
 class Card(object):
@@ -46,8 +44,8 @@ class Card(object):
         self.foreground = foreground
 
     def readout(self):
-        return colorama.Style.BRIGHT + self.background + \
-            self.foreground + (self.number * self.symbol)
+        return self.background + \
+            self.foreground + (self.number * self.symbol) + font_reset
 
 
 def create_deck():
