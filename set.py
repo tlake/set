@@ -2,10 +2,10 @@
 
 The deck consists of 81 cards varying in four features: 
 
-number (one, two, or three); 
-symbol (diamond, squiggle, oval); 
-shading (solid, striped, or open); 
-and color (red, green, or purple).
+number (1, 2, or 3); 
+symbol ('A', 'B', or 'C'); 
+background bg_blue, bg_black, or bg_magenta); 
+and foreground (fg_yellow, fg_cyan, or fg_white).
 
 Each possible combination of features (e.g., a card with three striped 
 green diamonds) appears precisely once in the deck.
@@ -15,8 +15,8 @@ A set consists of three cards which satisfy all of these conditions:
 
 They all have the same number, or they have three different numbers.
 They all have the same symbol, or they have three different symbols.
-They all have the same shading, or they have three different shadings.
-They all have the same color, or they have three different colors.
+They all have the same background, or they have three different backgrounds.
+They all have the same foregrounds, or they have three different foregrounds.
 
 The rules of Set are summarized by: If you can sort a group of three cards into "Two of ____ and one of _____," then it is not a set.
 
@@ -29,28 +29,36 @@ import os
 # Initialize colorama's coloring functionalities
 colorama.init(autoreset = True)
 
+# Define color definitions
+bg_blue = '\033[44m'
+bg_black = '\033[40m'
+bg_magenta = '\033[45m'
+fg_yellow = '\033[33m'
+fg_cyan = '\033[36m'
+fg_white = '\033[37m'
+
 
 class Card(object):
-    def __init__(self, number, symbol, shading, color):
+    def __init__(self, number, symbol, background, foreground):
         self.number = number
         self.symbol = symbol
-        self.shading = shading
-        self.color = color
+        self.background = background
+        self.foreground = foreground
 
     def readout(self):
-        properties = [self.number, self.symbol, self.shading, self.color]
-        return ' '.join(properties)
+        return colorama.Style.BRIGHT + self.background + \
+            self.foreground + (self.number * self.symbol)
 
 
 def create_deck():
     new_deck = []
     card_number = 0
-    for number in ['one  ', 'two  ', 'three']:
-        for symbol in ['diamond ', 'squiggle', 'oval    ']:
-            for shading in ['solid  ', 'striped', 'open   ']:
-                for color in ['red   ', 'green ', 'purple']:
+    for number in [1, 2, 3]:
+        for symbol in [' A ', ' B ', ' C ']:
+            for background in [bg_blue, bg_black, bg_magenta]:
+                for foreground in [fg_yellow, fg_cyan, fg_white]:
                     card_number += 1
-                    new_deck.append(Card(number, symbol, shading, color))
+                    new_deck.append(Card(number, symbol, background, foreground))
     return new_deck
 
 
@@ -63,10 +71,10 @@ def deal_to_field(source_deck, field_deck):
         print "No cards left in source deck!"
 
 
-def show_field(field):
+def show_field(cards):
     print ""
-    for i in range(len(field)):
-        print i, ':', field[i].readout()
+    for i in range(len(cards)):
+        print i, ':', cards[i].readout()
     print ""
 
 
@@ -90,29 +98,29 @@ def symbol_test(card1, card2, card3):
         print "The symbols don't make a set."
         return False
 
-def shading_test(card1, card2, card3):
-    if card1.shading == card2.shading and card2.shading == card3.shading:
+def background_test(card1, card2, card3):
+    if card1.background == card2.background and card2.background == card3.background:
         return True
-    elif card1.shading != card2.shading and card2.shading != card3.shading \
-        and card3.shading != card1.shading:
+    elif card1.background != card2.background and card2.background != card3.background \
+        and card3.background != card1.background:
         return True
     else:
-        print "The shadings don't make a set."
+        print "The backgrounds don't make a set."
         return False
 
-def color_test(card1, card2, card3):
-    if card1.color == card2.color and card2.color == card3.color:
+def foreground_test(card1, card2, card3):
+    if card1.foreground == card2.foreground and card2.foreground == card3.foreground:
         return True
-    elif card1.color != card2.color and card2.color != card3.color \
-        and card3.color != card1.color:
+    elif card1.foreground != card2.foreground and card2.foreground != card3.foreground \
+        and card3.foreground != card1.foreground:
         return True
     else:
-        print "The colors don't make a set." 
+        print "The foregrounds don't make a set." 
         return False 
 
 def test_for_set(card1, card2, card3):
     if number_test(card1, card2, card3) and symbol_test(card1, card2, \
-        card3) and shading_test(card1, card2, card3) and color_test( \
+        card3) and background_test(card1, card2, card3) and foreground_test( \
         card1, card2, card3):
         return True
     else:
@@ -127,50 +135,74 @@ def play_set():
 
     os.system('clear')
 
-    print "!!!!!!!!!!"
-    print "NOTE WELL:"
-    print "!!!!!!!!!!"
-    print "This version of the game is bare-bones functional only!"
-    print "Now is not the time to try and break things. I know a bunch"
-    print "of things that need fixing still. For now, just play by the"
-    print "rules, and don't try to stick any strange inputs where they"
-    print "don't belong. Thanks! -TL"
-
     for i in range(0, 12):
         deal_to_field(deck, field)
 
+    # execution of game
     while len(field) > 0:
         show_field(field)
         
-        mode_select = raw_input("Would you like to declare a set or " + \
-            "deal three more cards? (set/deal) ")
+        mode_select = raw_input("Would you like to declare a set, " + \
+            "deal three more cards, or check on the status of the " \
+            "deck? (set/deal/check) ")
 
-        if mode_select == "deal":
+        if mode_select not in ['set', 'deal', 'check']:
+            print '\n', 'Invalid action.'
+
+        elif mode_select == 'deal':
             for i in range(0, 3):
                 deal_to_field(deck, field)
-            show_field(field)
 
-        print "You will be prompted to make three selections."
-        print "Use the index numbers on the left for your choices.", "\n"
+        elif mode_select == 'check':
+            print '\n', 'There are ' + str(len(deck)) + ' cards left ' \
+                + 'in the deck, and ' + str(len(field)) + ' cards on ' \
+                + 'the field.'
+        else:
 
-        choice1 = int(raw_input(" First Choice: "))
-        choice2 = int(raw_input("Second Choice: "))
-        choice3 = int(raw_input(" Third Choice: "))
+            print "You will be prompted to make three selections."
+            print "Use the index numbers on the left for your choices.", \
+                "\n"
 
-        print ""
+            choice1 = raw_input(" First Choice: ")
+            choice2 = raw_input("Second Choice: ")
+            choice3 = raw_input(" Third Choice: ")
 
-        holding = []
-        if test_for_set(field[choice1], field[choice2], field[choice3]):
-            print "\n--- You made a set! ---\n"
-            for i in range(len(field)):
-                if i not in [choice1, choice2, choice3]:
-                    holding.append(field[i])
-            field = holding
-            if len(field) < 10 and len(deck) > 0:
-                for i in range(0, 3):
-                    deal_to_field(deck, field)
+            # error handling to catch nonvalid card selections
+            if ( \
+                choice1 not in range(len(field)) or \
+                choice2 not in range(len(field)) or \
+                choice3 not in range(len(field)) \
+                ) \
+                or ( \
+                choice1 == choice2 or \
+                choice2 == choice3 or \
+                choice3 == choice1 \
+                ):
+
+                print '\n', 'Please enter three different, valid ' \
+                    + 'card indices.'
+
+            else:
+
+                choice1 = int(choice1)
+                choice2 = int(choice2)
+                choice3 = int(choice3)
+
+                print ""
+
+                holding = []
+                if test_for_set(field[choice1], field[choice2], \
+                    field[choice3]):
+                    print "\n--- You made a set! ---\n"
+                    for i in range(len(field)):
+                        if i not in [choice1, choice2, choice3]:
+                            holding.append(field[i])
+                    field = holding
+                    if len(field) < 10 and len(deck) > 0:
+                        for i in range(0, 3):
+                            deal_to_field(deck, field)
 
         if len(field) < 1 and len(deck) < 1:
-            print "Congratulations! Game over!"
+            print "Congratulations! The game ends in VICTORY!"
 
 
