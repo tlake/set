@@ -5,7 +5,7 @@ The deck consists of 81 cards varying in four features:
 number (1, 2, or 3); 
 symbol ('A', 'B', or 'C'); 
 background bg_blue, bg_black, or bg_magenta); 
-and foreground (fg_yellow, fg_cyan, or fg_white).
+and foreground (fg_red, fg_cyan, or fg_white).
 
 Each possible combination of features (e.g., a card with three striped 
 green diamonds) appears precisely once in the deck.
@@ -30,7 +30,7 @@ import os
 bg_blue = '\033[44m'
 bg_black = '\033[40m'
 bg_magenta = '\033[45m'
-fg_yellow = '\033[1;33m'
+fg_red = '\033[1;31m'
 fg_cyan = '\033[1;36m'
 fg_white = '\033[1;37m'
 font_reset = '\033[0m'
@@ -54,7 +54,7 @@ def create_deck():
     for number in [1, 2, 3]:
         for symbol in [' A ', ' B ', ' C ']:
             for background in [bg_blue, bg_black, bg_magenta]:
-                for foreground in [fg_yellow, fg_cyan, fg_white]:
+                for foreground in [fg_red, fg_cyan, fg_white]:
                     card_number += 1
                     new_deck.append(Card(number, symbol, background, foreground))
     return new_deck
