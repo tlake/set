@@ -220,3 +220,5 @@ def play_set():
             print "Congratulations! The game ends in VICTORY!"
 
 
+if __name__ == "__main__":
+    play_set()
